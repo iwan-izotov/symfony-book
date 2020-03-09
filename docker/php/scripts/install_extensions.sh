@@ -6,6 +6,7 @@ apt-get update -y && apt-get install -y \
     g++ \
     build-essential \
     libbz2-dev \
+    libonig-dev \
     libedit-dev \
     libfreetype6-dev \
     libicu-dev \
@@ -29,16 +30,16 @@ apt-get update -y && apt-get install -y \
     openssl \
     zip \
     curl \
+    librabbitmq-dev \
+    libssh-dev \
+    libpq-dev \
+    libxslt-dev \
     ssh \
-    imagemagick \
     libssh2-1-dev \
     libssh2-1
 
 # Install extensions
-docker-php-ext-configure gd \
-    --with-freetype-dir=/usr/include/ \
-    --with-jpeg-dir=/usr/include/ \
-    --with-png-dir=/usr/include/ \
+docker-php-ext-configure gd --with-freetype --with-jpeg \
   && docker-php-ext-install -j$(nproc) gd \
   && docker-php-ext-configure intl \
   && docker-php-ext-install -j$(nproc) intl \
@@ -47,6 +48,8 @@ docker-php-ext-configure gd \
      bz2 \
      calendar \
      exif \
+     pdo_pgsql \
+     xsl \
      gettext \
      mysqli \
      opcache \
@@ -59,6 +62,5 @@ docker-php-ext-configure gd \
      exif \
      pcntl \
      mbstring \
-  && docker-php-ext-configure zip --with-libzip \
-  && docker-php-ext-install zip \
-  && pecl install xdebug-2.7.2 && docker-php-ext-enable xdebug
+  && docker-php-ext-configure zip && docker-php-ext-install zip \
+  && pecl install xdebug-2.8.1 && docker-php-ext-enable xdebug

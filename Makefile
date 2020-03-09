@@ -16,7 +16,7 @@ docker-prune: ## Удаляет неиспользуемые ресурсы до
 
 .PHONY: docker-up
 docker-up: create-env ## Запускает все Docker-контейнеры в фоновом режиме
-	docker-compose up -d
+	docker-compose up -d --build
 
 .PHONY: docker-down
 docker-down: create-env ## Останвливает контейнеры и удаляет их
