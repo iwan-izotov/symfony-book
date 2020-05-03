@@ -43,6 +43,9 @@ RUN /tmp/php_scripts/cleanup.sh
 # Устанавливаем рабочую дерикторию
 WORKDIR /var/www/symfony_start
 
+# Устанавливаем подстветку bash
+COPY ./shared/.bashrc /root/.bashrc
+
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
 CMD ["php-fpm"]

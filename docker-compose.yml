@@ -45,9 +45,51 @@ services:
       - "traefik.http.routers.nginx.rule=Host(`symfony_start.local`)"
       - "traefik.http.routers.nginx.entrypoints=web"
 
+  postgres:
+    image: postgres:11-alpine
+    restart: always
+    container_name: symfony_start_postgres
+    volumes:
+      - type: volume
+        source: dbdata
+        target: /var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: main
+      POSTGRES_PASSWORD: main
+      POSTGRES_DB: main
+    networks:
+      backend:
+        ipv4_address: 11.13.10.6
+    ports:
+      - "5432:5432"
+    labels:
+      - "traefik.enable=false"
+
+  # Login:pgadmin@example.com Password:main
+  pgadmin:
+    container_name: symfony_start_pgadmin
+    image: dpage/pgadmin4
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@example.com
+      PGADMIN_DEFAULT_PASSWORD: main
+    volumes:
+      - type: volume
+        source: pgadmin
+        target: /var/lib/pgadmin
+    restart: always
+    networks:
+      backend:
+        ipv4_address: 11.13.10.7
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.local`)"
+      - "traefik.http.routers.pgadmin.entrypoints=web"
+
   # Login:admin Password:password
   portainer:
-    image: portainer/portainer:1.22.2
+    image: portainer/portainer:1.23.2
     container_name: symfony_start_portainer
     restart: always
     command: --admin-password '$$2y$$05$$arC5e4UbRPxfR68jaFnAAe1aL7C1U03pqfyQh49/9lB9lqFxLfBqS' -H unix:///var/run/docker.sock
@@ -65,7 +107,7 @@ services:
       - "traefik.http.routers.portainer.entrypoints=web"
 
   traefik:
-    image: traefik:v2.0
+    image: traefik:v2.2
     restart: always
     command:
       - "--api.insecure=true"
@@ -85,6 +127,10 @@ services:
       - "traefik.http.routers.traefik.rule=Host(`traefik.local`)"
       - "traefik.http.services.traefik.loadbalancer.server.port=8080"
       - "traefik.http.routers.traefik.entrypoints=web"
+
+volumes:
+  dbdata:
+  pgadmin:
 
 networks:
   backend:
