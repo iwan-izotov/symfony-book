@@ -39,4 +39,4 @@ docker-build: create-env ## Собирает все образы докера
 
 .PHONY: console
 console: ## Запускает bash на контейнере php-fpm (для запуска консольных команд)
-	docker exec -it symfony_start_php_fpm bash -c 'bash'
+	docker exec -it symfony_start_php_fpm bash

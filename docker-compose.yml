@@ -87,6 +87,22 @@ services:
       - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.local`)"
       - "traefik.http.routers.pgadmin.entrypoints=web"
 
+  adminer:
+    image: adminer
+    container_name: symfony_start_adminer
+    restart: always
+    environment:
+      - ADMINER_DESIGN=nette
+      - ADMINER_DEFAULT_SERVER=postgres
+    networks:
+      backend:
+        ipv4_address: 11.13.10.8
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.adminer.rule=Host(`adminer.local`)"
+      - "traefik.http.services.adminer.loadbalancer.server.port=8080"
+      - "traefik.http.routers.adminer.entrypoints=web"
+
   # Login:admin Password:password
   portainer:
     image: portainer/portainer:1.23.2
