@@ -24,8 +24,8 @@ easy_admin:
                     - author
                     - { property: 'email', type: 'email' }
                     - { property: 'createdAt', type: 'datetime' }
-            sort: ['createdAt', 'ASC']
-            filters: ['conference']
+                sort: ['createdAt', 'ASC']
+                filters: ['conference']
             edit:
                 fields:
                     - { property: 'conference' }
