@@ -1,9 +1,3 @@
-#easy_admin:
-#    entities:
-#      - App\Entity\Conference
-#      - App\Entity\Comment
-#
-
 easy_admin:
     site_name: Conference Guestbook
 
