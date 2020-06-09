@@ -65,6 +65,33 @@ services:
     labels:
       - "traefik.enable=false"
 
+  redis:
+    image: redis:6-alpine
+    restart: always
+    container_name: symfony_start_redis
+    ports:
+      - "6379:6379"
+    networks:
+      backend:
+        ipv4_address: 11.13.10.9
+    labels:
+      - "traefik.enable=false"
+
+  redis-commander:
+    container_name: symfony_redis_commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:11.13.10.9:6379
+    networks:
+      backend:
+        ipv4_address: 11.13.10.10
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rediscommander.rule=Host(`rediscommander.local`)"
+      - "traefik.http.services.rediscommander.loadbalancer.server.port=8081"
+      - "traefik.http.routers.rediscommander.entrypoints=web"
+
   # Login:pgadmin@example.com Password:main
   pgadmin:
     container_name: symfony_start_pgadmin
